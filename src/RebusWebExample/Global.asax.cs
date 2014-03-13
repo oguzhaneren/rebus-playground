@@ -57,9 +57,9 @@ namespace RebusWebExample
                 .SpecifyOrderOfHandlers(c => c
                     .First<ValidationMessageHandler>()
                     .Then<AuthenticationMessageHandler>())
+                .Events(e => e.AddUnitOfWorkManager(new WindsorUnitOfWorkManager(Container)))
                 .CreateBus()
                 .Start();
-            Bus.Advanced.Events.AddUnitOfWorkManager(new WindsorUnitOfWorkManager(Container));
         }
 
         protected void Application_End()
