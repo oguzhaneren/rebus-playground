@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Message Notifications</h2>
+<div class="container">
+    <input type="button" id="send-valid-message" value="Send Valid Message" />
+    <input type="button" id="send-invalid-message" value="Send Invalid Message" />
+    
+    <ul id="discussion">
+    </ul>
+</div>
+@section scripts
+{
+    <script>
+        $(function () {
+            var chat = $.connection.messageNotificationHub;
+            chat.client.notify = function ( message) {
+                $('#discussion').append('<li><strong>status</strong>: ' + htmlEncode(message) + '</li>');
+            };
+          
+            $.connection.hub.start().done(function () {
+                $('#send-valid-message').click(function () {
+                    $.post("/api/Task/", { taskId: "A5F74025-F698-4C44-8F78-03043975305F", newName: "new nameeee" }, function(response) {
+
+                    });
+                });
+                $('#send-invalid-message').click(function () {
+                    $.post("/api/Task/", { newName: "new nameeee" }, function(response) {
+
+                    });
+                });
+            });
+        });
+        function htmlEncode(value) {
+            var encodedValue = $('<div />').text(value).html();
+            return encodedValue;
+        }
+    </script>
+}
